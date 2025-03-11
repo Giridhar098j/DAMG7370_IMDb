@@ -1,0 +1,45 @@
+{
+	"name": "SnowflakeTable_Title_Episode",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SnowflakeLSIMDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "TCONST",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "PARENTTCONST",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "SEASONNUMBER",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "EPISODENUMBER",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "JOB_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LOAD_DT",
+				"type": "DATE"
+			}
+		],
+		"typeProperties": {
+			"schema": "IMDB_SCHEMA",
+			"table": "STAGE_TITLE_EPISODE"
+		}
+	}
+}
