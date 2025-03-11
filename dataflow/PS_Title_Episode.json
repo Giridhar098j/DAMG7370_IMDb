@@ -57,9 +57,15 @@
 				"     updateable:false,",
 				"     upsertable:false,",
 				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true) ~> sinkSnowflake"
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          TCONST = tconst,",
+				"          PARENTTCONST = parentTconst,",
+				"          SEASONNUMBER = seasonNumber,",
+				"          EPISODENUMBER = episodeNumber,",
+				"          JOB_ID = Job_Id,",
+				"          LOAD_DT = Load_Dt",
+				"     )) ~> sinkSnowflake"
 			]
 		}
 	}
