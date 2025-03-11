@@ -1,0 +1,96 @@
+{
+	"name": "Load_Dim_Genre",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_Title_Basics",
+						"type": "DatasetReference"
+					},
+					"name": "sourceTitleBasics"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_DIM_GENRE",
+						"type": "DatasetReference"
+					},
+					"name": "DimGenreMAXID"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_DIM_GENRE",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SourceDataWithSK"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "surrogateKey1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     Job_Id as string (\"49\")",
+				"}",
+				"source(output(",
+				"          GENRES as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT DISTINCT(GENRES) FROM STAGE_TITLE_BASICS',",
+				"     format: 'query') ~> sourceTitleBasics",
+				"source(output(",
+				"          MAXGENRESK as decimal(20,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'select NVL(MAX(GENRE_ID_SK),0) as MaxGenreSk FROM IMDB_SCHEMA.DIM_GENRE',",
+				"     format: 'query') ~> DimGenreMAXID",
+				"sourceTitleBasics, DimGenreMAXID join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> SourceDataWithSK",
+				"surrogateKey1 derive(GENRE_ID_SK = MAXGENRESK+ RowNum,",
+				"          Job_Id = $Job_Id,",
+				"          Load_Dt = currentDate()) ~> derivedColumn1",
+				"SourceDataWithSK keyGenerate(output(RowNum as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          GENRE_ID_SK as string,",
+				"          GENRE_NAME as string,",
+				"          JOB_ID as string,",
+				"          LOAD_DT as date",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          GENRE_ID_SK,",
+				"          GENRE_NAME = GENRES,",
+				"          JOB_ID = Job_Id,",
+				"          LOAD_DT = Load_Dt",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
