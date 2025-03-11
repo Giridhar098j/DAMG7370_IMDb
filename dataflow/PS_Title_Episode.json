@@ -1,0 +1,66 @@
+{
+	"name": "PS_Title_Episode",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Parquet_Title_Episode",
+						"type": "DatasetReference"
+					},
+					"name": "EpisodesPqt"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_Title_Episode",
+						"type": "DatasetReference"
+					},
+					"name": "sinkSnowflake"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     Job_Id as string (\"49\")",
+				"}",
+				"source(output(",
+				"          tconst as string,",
+				"          parentTconst as string,",
+				"          seasonNumber as long,",
+				"          episodeNumber as long",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> EpisodesPqt",
+				"EpisodesPqt derive(Job_Id = $Job_Id,",
+				"          Load_Dt = currentDate()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TCONST as string,",
+				"          PARENTTCONST as string,",
+				"          SEASONNUMBER as decimal(38,0),",
+				"          EPISODENUMBER as decimal(38,0),",
+				"          JOB_ID as string,",
+				"          LOAD_DT as date",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true) ~> sinkSnowflake"
+			]
+		}
+	}
+}
