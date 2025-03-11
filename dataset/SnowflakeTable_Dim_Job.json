@@ -1,0 +1,39 @@
+{
+	"name": "SnowflakeTable_Dim_Job",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SnowflakeLSIMDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "JOB_ID_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "JOB_TITLE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CATEGORY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "JOB_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LOAD_DT",
+				"type": "DATE"
+			}
+		],
+		"typeProperties": {
+			"schema": "IMDB_SCHEMA",
+			"table": "DIM_JOB"
+		}
+	}
+}
