@@ -1,0 +1,45 @@
+{
+	"name": "Parquet_Name_Basics",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorageIMDb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "name_basics_cleaned.parquet",
+				"fileSystem": "silver"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "nconst",
+				"type": "UTF8"
+			},
+			{
+				"name": "primaryName",
+				"type": "UTF8"
+			},
+			{
+				"name": "birthYear",
+				"type": "INT64"
+			},
+			{
+				"name": "deathYear",
+				"type": "INT64"
+			},
+			{
+				"name": "primaryProfession",
+				"type": "UTF8"
+			},
+			{
+				"name": "knownForTitles",
+				"type": "UTF8"
+			}
+		]
+	}
+}
