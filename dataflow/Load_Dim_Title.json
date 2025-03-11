@@ -1,0 +1,115 @@
+{
+	"name": "Load_Dim_Title",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_Title_Basics",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStgTitleBasics"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_Dim_Title",
+						"type": "DatasetReference"
+					},
+					"name": "DimTitleMaxId"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_Dim_Title",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     Job_Id as string (\"67\")",
+				"}",
+				"source(output(",
+				"          TCONST as string,",
+				"          TITLETYPE as string,",
+				"          PRIMARYTITLE as string,",
+				"          ORIGINALTITLE as string,",
+				"          ISADULT as decimal(38,0),",
+				"          STARTYEAR as decimal(38,0),",
+				"          ENDYEAR as decimal(38,0),",
+				"          RUNTIMEMINUTES as decimal(38,0),",
+				"          GENRES as string,",
+				"          JOB_ID as string,",
+				"          LOAD_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> sourceStgTitleBasics",
+				"source(output(",
+				"          MAXTITLESK as decimal(20,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'select NVL(MAX(TITLE_ID_SK),0) as MaxTitleSk FROM IMDB_SCHEMA.DIM_TITLE',",
+				"     format: 'query') ~> DimTitleMaxId",
+				"sourceStgTitleBasics, DimTitleMaxId join(1==1,",
+				"     joinType:'cross',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 keyGenerate(output(RowNum as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(TITLE_ID_SK = MAXTITLESK+ RowNum,",
+				"          Job_Id = $Job_Id,",
+				"          LOAD_DT = currentDate()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TITLE_ID_SK as decimal(38,0),",
+				"          PRIMARY_TITLE as string,",
+				"          ORIGINAL_TITLE as string,",
+				"          IS_ADULT as decimal(38,0),",
+				"          START_YEAR as decimal(38,0),",
+				"          END_YEAR as decimal(38,0),",
+				"          RUNTIME_MINUTES as decimal(38,0),",
+				"          JOB_ID as string,",
+				"          LOAD_DT as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          TITLE_ID_SK,",
+				"          PRIMARY_TITLE = PRIMARYTITLE,",
+				"          ORIGINAL_TITLE = ORIGINALTITLE,",
+				"          IS_ADULT = ISADULT,",
+				"          START_YEAR = STARTYEAR,",
+				"          END_YEAR = ENDYEAR,",
+				"          RUNTIME_MINUTES = RUNTIMEMINUTES,",
+				"          JOB_ID = derivedColumn1@Job_Id,",
+				"          LOAD_DT",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

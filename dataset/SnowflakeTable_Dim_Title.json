@@ -1,0 +1,63 @@
+{
+	"name": "SnowflakeTable_Dim_Title",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SnowflakeLSIMDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "TITLE_ID_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PRIMARY_TITLE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "ORIGINAL_TITLE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "IS_ADULT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "START_YEAR",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "END_YEAR",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "RUNTIME_MINUTES",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "JOB_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LOAD_DT",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "IMDB_SCHEMA",
+			"table": "DIM_TITLE"
+		}
+	}
+}

@@ -1,0 +1,47 @@
+{
+	"name": "SnowflakeTable_Dim_Episode",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SnowflakeLSIMDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "EPISODE_ID_SK",
+				"type": "NUMBER",
+				"precision": 20,
+				"scale": 0
+			},
+			{
+				"name": "TITLE_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "SEASON_NUMBER",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "EPISODE_NUMBER",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "JOB_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LOAD_DT",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "IMDB_SCHEMA",
+			"table": "DIM_EPISODE"
+		}
+	}
+}
