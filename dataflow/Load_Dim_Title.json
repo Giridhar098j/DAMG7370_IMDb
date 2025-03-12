@@ -29,7 +29,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable_Dim_Title",
+						"referenceName": "SnowflakeTable1",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -100,17 +100,6 @@
 				"     broadcast: 'auto')~> join1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          TITLE_ID_SK as decimal(38,0),",
-				"          PRIMARY_TITLE as string,",
-				"          ORIGINAL_TITLE as string,",
-				"          IS_ADULT as decimal(38,0),",
-				"          START_YEAR as decimal(38,0),",
-				"          END_YEAR as decimal(38,0),",
-				"          RUNTIME_MINUTES as decimal(38,0),",
-				"          JOB_ID as string,",
-				"          LOAD_DT as string",
-				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",
@@ -120,10 +109,16 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     stageInsert: true,",
 				"     mapColumn(",
-				"          TITLE_ID_SK,",
+				"          TCONST,",
 				"          PRIMARY_TITLE = PRIMARYTITLE,",
 				"          ORIGINAL_TITLE = ORIGINALTITLE,",
-				"          JOB_ID",
+				"          IS_ADULT = ISADULT,",
+				"          START_YEAR = STARTYEAR,",
+				"          END_YEAR = ENDYEAR,",
+				"          RUNTIME_MINUTES = RUNTIMEMINUTES,",
+				"          TITLE_ID_SK,",
+				"          JOB_ID,",
+				"          LOAD_DT",
 				"     )) ~> sink1"
 			]
 		}

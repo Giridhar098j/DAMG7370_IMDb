@@ -109,6 +109,8 @@
 			{
 				"name": "Dataflow_Dim_Job",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Dataflow_Dim Title",
@@ -143,6 +145,8 @@
 			{
 				"name": "Dataflow_Dim_Language",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Dataflow_Dim_Episode",
@@ -177,6 +181,8 @@
 			{
 				"name": "Dataflow_Dim_Person",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Dataflow_Dim_Region",
@@ -211,6 +217,8 @@
 			{
 				"name": "Dataflow_Dim_Region",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Dataflow_Dim_Language",
