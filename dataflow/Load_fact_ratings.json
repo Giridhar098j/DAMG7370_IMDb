@@ -1,0 +1,61 @@
+{
+	"name": "Load_fact_ratings",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_Title_Ratings",
+						"type": "DatasetReference"
+					},
+					"name": "StgTitleRatings"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_Dim_Title",
+						"type": "DatasetReference"
+					},
+					"name": "DimTitle"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "join1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          TCONST as string,",
+				"          AVERAGERATING as double,",
+				"          NUMVOTES as decimal(38,0),",
+				"          JOB_ID as string,",
+				"          LOAD_DT as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> StgTitleRatings",
+				"source(output(",
+				"          TITLE_ID_SK as decimal(38,0),",
+				"          PRIMARY_TITLE as string,",
+				"          ORIGINAL_TITLE as string,",
+				"          IS_ADULT as decimal(38,0),",
+				"          START_YEAR as decimal(38,0),",
+				"          END_YEAR as decimal(38,0),",
+				"          RUNTIME_MINUTES as decimal(38,0),",
+				"          JOB_ID as string,",
+				"          LOAD_DT as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> DimTitle",
+				"StgTitleRatings, DimTitle join(TCONST == ERROR_FUNCTION(''),",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1"
+			]
+		}
+	}
+}
