@@ -5,6 +5,8 @@
 			{
 				"name": "Dataflow_ratings",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.00:30:00",
@@ -35,6 +37,8 @@
 			{
 				"name": "Dataflow_principals",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Dataflow_ratings",
@@ -72,6 +76,8 @@
 			{
 				"name": "Dataflow_name_basics",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Dataflow_principals",
@@ -109,6 +115,8 @@
 			{
 				"name": "Dataflow_akas",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Dataflow_name_basics",
@@ -146,6 +154,8 @@
 			{
 				"name": "Dataflow_crew",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Dataflow_akas",
@@ -183,6 +193,8 @@
 			{
 				"name": "Dataflow_episode",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Dataflow_crew",
@@ -220,6 +232,8 @@
 			{
 				"name": "Data flow_title_basics",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Dataflow_episode",
